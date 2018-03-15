@@ -27,7 +27,7 @@
 * Lua RTOS, ping utility
 *
 *
-* Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
+* Author: Jaume OlivÃ© (jolive@iberoxarxa.com / jolive@whitecatboard.org)
 *
 * --------------------------------------------------------------------------------
 *
@@ -230,7 +230,7 @@ static void stop_action(int i) {
 
 	stopped = 1;
 }
-+/
+*/
 /*
 * Operation functions
 *
