@@ -27,7 +27,7 @@
 * Lua RTOS, ping utility
 *
 *
-* Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
+* Author: Jaume OlivÃ© (jolive@iberoxarxa.com / jolive@whitecatboard.org)
 *
 * --------------------------------------------------------------------------------
 *
@@ -141,7 +141,7 @@ static err_t ping_send(int s, ip4_addr_t *addr, int size) {
 	if ((err = sendto(s, iecho, ping_size, 0, (struct sockaddr*)&to, sizeof(to)))) {
 		transmitted++;
 	}
-
+	free(iecho)
 	return (err ? ERR_OK : ERR_VAL);
 }
 
