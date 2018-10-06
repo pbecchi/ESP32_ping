@@ -230,7 +230,7 @@ static void stop_action(int i) {
 
 	stopped = 1;
 }
-+/
+*/
 /*
 * Operation functions
 *
