@@ -10,13 +10,13 @@
 #include  "ping.h"
 
 // the setup function runs once when you press reset or power the board
-const char ssid[] = "TP-LINK_C20B";  //  your network SSID (name)
-const char password[] = "paolo-48";       // your network password
+const char ssid[] = "your SSID";  //  your network SSID (name)
+const char password[] = "your Password";       // your network password
 
 void setup() {
 
 	Serial.begin(115200);
-	Serial.print("Connecting t ");
+	Serial.print("Connecting to ");
 	Serial.println(ssid);
 	// WiFi.mode(WIFI_STA);
 
