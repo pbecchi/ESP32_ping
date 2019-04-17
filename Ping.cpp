@@ -246,12 +246,19 @@ void ping(const char *name, int count, int interval, int size, int timeout) {
 	ping_start(adr, count, interval, size, timeout);
 }
 bool ping_start(struct ping_option *ping_o) {
-	
+
 
 	return ping_start(ping_o->ip,ping_o->count,0,0,0);
 
 }
+
 bool ping_start(IPAddress adr, int count=0, int interval=0, int size=0, int timeout=0) {
+
+	return ping_start(adr, count=0, interval=0, size=0, timeout=0, NULL);
+
+}
+
+bool ping_start(IPAddress adr, int count=0, int interval=0, int size=0, int timeout=0, struct ping_result *result=NULL) {
 //	driver_error_t *error;
 	struct sockaddr_in address;
 	ip4_addr_t ping_target;
@@ -330,6 +337,16 @@ bool ping_start(IPAddress adr, int count=0, int interval=0, int size=0, int time
 		((((float)transmitted - (float)received) / (float)transmitted) * 100.0)
 	);
 
+	if (result != NULL) {
+		result->transmitted = transmitted;
+		result->received = received;
+		result->loss_rate = ((((float)transmitted - (float)received) / (float)transmitted) * 100.0);
+		result->min_time = min_time;
+		result->mean_time = mean_time;
+		result->max_time = max_time;
+		result->var_time = var_time;
+	}
+
 	if (received) {
 		ping_resp pingresp;
 		log_i("round-trip min/avg/max/stddev = %.3f/%.3f/%.3f/%.3f ms\r\n", min_time, mean_time, max_time, sqrt(var_time / received));
@@ -338,6 +355,7 @@ bool ping_start(IPAddress adr, int count=0, int interval=0, int size=0, int time
 		pingresp.total_bytes = 1;
 		pingresp.total_time = mean_time;
 		pingresp.ping_err = 0;
+
 		return true;
 	//	ping_o->sent_function(ping_o, (uint8*)&pingresp);
 	}

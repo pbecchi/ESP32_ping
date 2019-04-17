@@ -51,12 +51,37 @@ void loop() {
 			ia[i++] =val ;
 	}
 	IPAddress adr = IPAddress(ia[0], ia[1], ia[2], ia[3]);
-	Serial.printf("Ping : %d . %d . %d . %d ->", ia[0], ia[1], ia[2], ia[3]);
-	if (ping_start(adr, 4, 0, 0, 5))
+	Serial.printf("Ping : %d . %d . %d . %d -> ", ia[0], ia[1], ia[2], ia[3]);
+	struct ping_result result;
+	if (ping_start(adr, 4, 0, 0, 5, &result)) {
 		Serial.println("OK");
-	else
+		Serial.println("--- statistics ---");
+		Serial.print(result.transmitted);
+		Serial.print(" packets transmitted, ");
+		Serial.print(result.received);
+		Serial.print(" packets received, ");
+		Serial.print(result.loss_rate, 2);
+		Serial.println("% packet loss");
+		Serial.print("round-trip min/avg/max/stddev = ");
+		Serial.print(result.min_time, 3);
+		Serial.print("/");
+		Serial.print(result.mean_time, 3);
+		Serial.print("/");
+		Serial.print(result.max_time, 3);
+		Serial.print("/");
+		Serial.print(result.var_time / result.received, 3);
+		Serial.println(" ms");
+	} else {
 		Serial.println("FAILED");
-	delay(10000);
+		Serial.println("--- statistics ---");
+		Serial.print(result.transmitted);
+		Serial.print(" packets transmitted, ");
+		Serial.print(result.received);
+		Serial.print(" packets received, ");
+		Serial.print(result.loss_rate, 2);
+		Serial.println("% packet loss");
+	}
+	delay(5000);
 
 }
 int readnu(char s) {

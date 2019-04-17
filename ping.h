@@ -26,8 +26,20 @@ struct ping_resp {
 	int8_t  ping_err;
 };
 
+struct ping_result {
+	uint32_t transmitted = 0;
+	uint32_t received = 0;
+	float loss_rate	 = 0;
+	float min_time = 0;
+	float max_time = 0;
+	float mean_time = 0;
+	float last_mean_time = 0;
+	float var_time = 0;
+};
+
 bool ping_start(struct ping_option *ping_opt);
 void ping(const char *name, int count, int interval, int size, int timeout);
 bool ping_start(IPAddress adr, int count, int interval, int size, int timeout);
+bool ping_start(IPAddress adr, int count, int interval, int size, int timeout, struct ping_result *result);
 
 #endif
