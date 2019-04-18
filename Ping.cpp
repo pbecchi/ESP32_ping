@@ -235,15 +235,38 @@ static void stop_action(int i) {
 * Operation functions
 *
 */
-void ping(const char *name, int count, int interval, int size, int timeout) {
+
+bool ping(const char *name, int count, int interval, int size, int timeout) {
+	return ping(name, count, interval, size, timeout, NULL);
+}
+
+bool ping(const char *name, int count, int interval, int size, int timeout, struct ping_result *result) {
+	struct addrinfo hints, *target;
+	int err;
 	// Resolve name
-	hostent * target = gethostbyname(name);
-	IPAddress adr = *target->h_addr_list[0];
-	if (target->h_length == 0) {
+	log_i("PING %s\r\n", name);
+
+	memset(&hints, 0, sizeof(hints));
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_family = AF_INET;
+	if ((err = getaddrinfo(name, NULL, &hints, &target)) != 0) {
+    log_d("getaddrinfo error %d\r\n", err);
+  	log_i("Cannot resolve %s: Unknown host\r\n", name);
 		// TODO: error not found target?????
-		return;
+		if (result != NULL) {
+			result->transmitted = 0;
+			result->received = 0;
+			result->loss_rate = 0;
+			result->min_time = 0;
+			result->mean_time = 0;
+			result->max_time = 0;
+			result->var_time = 0;
+		}
+		return false;
 	}
-	ping_start(adr, count, interval, size, timeout);
+	IPAddress adr = IPAddress(((struct sockaddr_in *)(target->ai_addr))->sin_addr.s_addr);
+	freeaddrinfo(target);
+	return ping_start(adr, count, interval, size, timeout, result);
 }
 bool ping_start(struct ping_option *ping_o) {
 

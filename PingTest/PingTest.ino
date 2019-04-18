@@ -13,6 +13,8 @@
 const char ssid[] = "TP-LINK_C20B";  //  your network SSID (name)
 const char password[] = "paolo-48";       // your network password
 
+const char *host = "www.google.com"; // ping target hostname
+
 void setup() {
 
 	Serial.begin(115200);
@@ -81,6 +83,36 @@ void loop() {
 		Serial.print(result.loss_rate, 2);
 		Serial.println("% packet loss");
 	}
+
+	Serial.printf("Ping : %s -> ", host);
+ 	if (ping(host, 4, 0, 0, 5, &result)) {
+		Serial.println("OK");
+		Serial.println("--- statistics ---");
+		Serial.print(result.transmitted);
+		Serial.print(" packets transmitted, ");
+		Serial.print(result.received);
+		Serial.print(" packets received, ");
+		Serial.print(result.loss_rate, 2);
+		Serial.println("% packet loss");
+		Serial.print("round-trip min/avg/max/stddev = ");
+		Serial.print(result.min_time, 3);
+		Serial.print("/");
+		Serial.print(result.mean_time, 3);
+		Serial.print("/");
+		Serial.print(result.max_time, 3);
+		Serial.print("/");
+		Serial.print(result.var_time / result.received, 3);
+		Serial.println(" ms");
+	} else {
+		Serial.println("FAILED");
+		Serial.println("--- statistics ---");
+		Serial.print(result.transmitted);
+		Serial.print(" packets transmitted, ");
+		Serial.print(result.received);
+		Serial.print(" packets received, ");
+		Serial.print(result.loss_rate, 2);
+		Serial.println("% packet loss");
+	 }
 	delay(5000);
 
 }

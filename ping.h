@@ -38,8 +38,8 @@ struct ping_result {
 };
 
 bool ping_start(struct ping_option *ping_opt);
-void ping(const char *name, int count, int interval, int size, int timeout);
+bool ping(const char *name, int count, int interval, int size, int timeout);
+bool ping(const char *name, int count, int interval, int size, int timeout, struct ping_result *result);
 bool ping_start(IPAddress adr, int count, int interval, int size, int timeout);
 bool ping_start(IPAddress adr, int count, int interval, int size, int timeout, struct ping_result *result);
-
 #endif
